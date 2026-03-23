@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My 3D Portfolio</title>
+
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial;
+    color: white;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 50px;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.1);
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    width: 300px;
+  }
+
+  .btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #00ffcc;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="content">
+  <h1>👋 AMARJEET DEVELOPER</h1>
+  <p>💻 Web Developer | 3D Designer</p>
+
+  <div class="card">
+    <h2>👨‍💻 About Me</h2>
+    <p>I build modern 3D websites and creative designs.</p>
+  </div>
+
+  <div class="card">
+    <h2>🚀 Skills</h2>
+    <p>HTML, CSS, JavaScript, Three.js</p>
+  </div>
+
+  <div class="card">
+    <h2>📂 Projects</h2>
+    <p>Portfolio Website, 3D Animations</p>
+  </div>
+
+  <div class="card">
+    <h2>📞 6200482928</h2>
+    <p>Email: amarjeetkumartiwari219@gmail.com</p>
+    <a href="#" class="btn">Hire Me</a>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+<script>
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#bg'),
+});
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+camera.position.z = 5;
+
+// Torus (main object)
+const geometry = new THREE.TorusGeometry(1, 0.4, 16, 100);
+const material = new THREE.MeshStandardMaterial({ color: 0x00ffcc });
+const torus = new THREE.Mesh(geometry, material);
+
+scene.add(torus);
+
+// Stars background
+function addStar() {
+  const geometry = new THREE.SphereGeometry(0.05, 24, 24);
+  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const star = new THREE.Mesh(geometry, material);
+
+  const [x, y, z] = Array(3)
+    .fill()
+    .map(() => THREE.MathUtils.randFloatSpread(100));
+
+  star.position.set(x, y, z);
+  scene.add(star);
+}
+
+Array(200).fill().forEach(addStar);
+
+// Light
+const light = new THREE.PointLight(0xffffff);
+light.position.set(5, 5, 5);
+scene.add(light);
+
+// Animation
+function animate() {
+  requestAnimationFrame(animate);
+
+  torus.rotation.x += 0.01;
+  torus.rotation.y += 0.01;
+
+  renderer.render(scene, camera);
+}
+
+animate();
+</script>
+
+</body>
+</html>
